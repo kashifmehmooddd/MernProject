@@ -3,28 +3,15 @@ const {
 } = require("express-validator")
 const Profile = require("../models/Profile")
 
-const currentProfile = async (req, res) => {
+const index = async (req, res) => {
+
   try {
-    const profile = await Profile.findOne({
-      user: req.user
-    }).populate('user', ['name', 'avatar'])
-
-    if (!profile) {
-      res.status(400).json({
-        errors: [{
-          msg: "There's no profile for this user!"
-        }]
-      })
-    }
-
-    res.send(profile)
-  } catch (err) {
-    console.log(err)
-    res.status(500).json({
-      errors: [{
-        msg: "server Error!"
-      }]
-    })
+    const profiles = await Profile.find()
+    res.json(profiles)
+  } catch (err)
+  {
+    console.log(err);
+    res.status(500).json({ errors: "Server Error!" } )
   }
 }
 
@@ -98,7 +85,33 @@ const createOrUpdate = async (req, res) => {
   }
 }
 
+const currentProfile = async (req, res) => {
+  try {
+    const profile = await Profile.findOne({
+      user: req.user
+    }).populate('user', ['name', 'avatar'])
+
+    if (!profile) {
+      res.status(400).json({
+        errors: [{
+          msg: "There's no profile for this user!"
+        }]
+      })
+    }
+
+    res.send(profile)
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({
+      errors: [{
+        msg: "server Error!"
+      }]
+    })
+  }
+}
+
 module.exports = {
   currentProfile,
-  createOrUpdate
+  createOrUpdate,
+  index
 }

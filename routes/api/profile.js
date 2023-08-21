@@ -5,12 +5,13 @@ const auth = require("../../middleware/auth")
 const {
   currentProfile,
   createOrUpdate,
+  index,
 } = require('../../controllers/profiles_controller');
 const {
   check
 } = require('express-validator');
 
-
+router.get('/', index);
 router.get('/me', auth, currentProfile);
 router.post('/', [auth, [
   check('status', 'Status is required!').not().isEmpty(),

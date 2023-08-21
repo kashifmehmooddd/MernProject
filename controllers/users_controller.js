@@ -3,8 +3,11 @@ const config = require("config")
 const gravatar = require('gravatar')
 const jwt = require('jsonwebtoken')
 const User = require('../models/User')
+const {
+  validationResult
+} = require('express-validator');
 
-const login = async (req, res) => {
+const create = async (req, res) => {
   const errors = validationResult(req)
 
   if (!errors.isEmpty()) {
@@ -73,4 +76,63 @@ const login = async (req, res) => {
   }
 }
 
-module.exports = { login }
+const login = async (req, res) => {
+  const errors = validationResult(req)
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      errors: errors.array()
+    })
+  }
+
+  const {
+    email,
+    password
+  } = req.body
+
+  try {
+    // already exists check
+    let user = await User.findOne({
+      email
+    })
+
+    if (!user) {
+      return res.status(400).json({
+        errors: [{
+          msg: 'Invalid Credentials!'
+        }]
+      })
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password)
+
+    if (!isMatch) {
+      return res.status(400).json({
+        errors: [{
+          msg: 'Invalid Credentials!'
+        }]
+      })
+    }
+
+    const payload = {
+      user: user.id
+    }
+
+    jwt.sign(payload, config.get('jwtSecret'), {
+      expiresIn: 360000
+    }, (err, token) => {
+      if (err) throw err;
+      res.send({
+        token
+      });
+    })
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: 'server Error'
+    })
+  }
+}
+
+module.exports = { create, login }

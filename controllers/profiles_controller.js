@@ -8,10 +8,36 @@ const index = async (req, res) => {
   try {
     const profiles = await Profile.find()
     res.json(profiles)
-  } catch (err)
-  {
+  } catch (err) {
     console.log(err);
-    res.status(500).json({ errors: "Server Error!" } )
+    res.status(500).json({
+      errors: "Server Error!"
+    })
+  }
+}
+
+const show = async (req, res) => {
+  try {
+    const profile = await Profile.findOne({
+      user: req.params.user_id
+    }).populate('user', ['name', 'avatar']);
+
+    if (!profile) {
+      return res.status(400).json({
+        errors: "There is no profile for this user!"
+      })
+    }
+
+    res.send(profile);
+  } catch (err) {
+    if (err.kind == 'ObjectId') {
+      return res.status(400).json({
+        errors: "There is no profile for this user!"
+      })
+    }
+    res.status(500).json({
+      errors: "Server Error!"
+    })
   }
 }
 
@@ -85,6 +111,30 @@ const createOrUpdate = async (req, res) => {
   }
 }
 
+const remove = async (req, res) => {
+  try {
+    await Profile.findOneAndRemove({
+      user: req.params.user_id
+    });
+    await User.findOneAndRemove({
+      _id: req.params.user_id
+    });
+
+    res.json({
+      msg: 'User deleted!'
+    });
+  } catch (err) {
+    if (err.kind == 'ObjectId') {
+      return res.status(400).json({
+        errors: "There is no profile for this user!"
+      })
+    }
+    res.status(500).json({
+      errors: "Server Error!"
+    })
+  }
+}
+
 const currentProfile = async (req, res) => {
   try {
     const profile = await Profile.findOne({
@@ -93,9 +143,7 @@ const currentProfile = async (req, res) => {
 
     if (!profile) {
       res.status(400).json({
-        errors: [{
-          msg: "There's no profile for this user!"
-        }]
+        msg: "There's no profile for this user!"
       })
     }
 
@@ -110,8 +158,165 @@ const currentProfile = async (req, res) => {
   }
 }
 
+const addExperience = async (req, res) => {
+  errors = validationResult(req)
+
+  if (!errors.isEmpty()) {
+    res.status(400).json({
+      errors: errors.array()
+    })
+  }
+
+  const {
+    title,
+    company,
+    location,
+    from,
+    to,
+    description,
+    current
+  } = req.body
+
+  const experienceFields = {
+    title,
+    company,
+    location,
+    from,
+    to,
+    description,
+    current
+  };
+
+  try {
+    let profile = await Profile.findOne({
+      user: req.user
+    })
+
+    if (!profile) {
+      return res.status(400).json({
+        msg: "Your Profile doesn't exist!"
+      })
+    }
+    profile.experience.unshift(experienceFields)
+    await profile.save()
+    res.send(profile);
+  } catch (err) {
+    if (err.kind == 'ObjectId') {
+      return res.status(400).json({
+        errors: "Profile not found"
+      })
+    }
+    res.status(500).json({
+      errors: "Server Error!"
+    })
+  }
+}
+
+const removeExperience = async (req, res) => {
+  try {
+    let profile = await Profile.findOne({
+      user: req.user
+    })
+    let updatedExps = profile.experience.filter(exp => exp._id != req.params.exp_id);
+    profile.experience = updatedExps
+    await profile.save();
+    res.send(profile);
+  } catch (err) {
+    if (err.kind == 'ObjectId') {
+      return res.status(400).json({
+        errors: "Profile not found"
+      })
+    }
+    res.status(500).json({
+      errors: "Server Error!"
+    })
+  }
+}
+
+const addEducation = async (req, res) => {
+  errors = validationResult(req)
+
+  if (!errors.isEmpty()) {
+    res.status(400).json({
+      errors: errors.array()
+    })
+  }
+
+  const {
+    school,
+    fieldofstudy,
+    location,
+    from,
+    to,
+    description,
+    current
+  } = req.body
+
+  const educationFields = {
+    school,
+    location,
+    fieldofstudy,
+    from,
+    to,
+    description,
+    current
+  };
+
+  try {
+    let profile = await Profile.findOne({
+      user: req.user
+    })
+
+    if (!profile) {
+      return res.status(400).json({
+        msg: "Your Profile doesn't exist!"
+      })
+    }
+    profile.education.unshift(educationFields)
+    await profile.save()
+    res.send(profile);
+  } catch (err) {
+    console.log(err);
+    if (err.kind == 'ObjectId') {
+      return res.status(400).json({
+        errors: "Profile not found"
+      })
+    }
+    res.status(500).json({
+      errors: "Server Error!"
+    })
+  }
+}
+
+const removeEducation = async (req, res) => {
+  try {
+    let profile = await Profile.findOne({
+      user: req.user
+    })
+    let updatedEdus = profile.education.filter(edu => edu._id != req.params.edu_id);
+    profile.education = updatedEdus;
+    await profile.save();
+    res.send(profile);
+  } catch (err) {
+    if (err.kind == 'ObjectId') {
+      return res.status(400).json({
+        errors: "Profile not found"
+      })
+    }
+    res.status(500).json({
+      errors: "Server Error!"
+    })
+  }
+}
+
 module.exports = {
   currentProfile,
   createOrUpdate,
-  index
+  index,
+  show,
+  remove,
+  addExperience,
+  removeExperience,
+  addEducation,
+  removeEducation
 }

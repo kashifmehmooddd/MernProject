@@ -29,7 +29,7 @@ const create = async (req, res) => {
     })
     if (user) {
       return res.status(400).json({
-        message: 'user already exists!'
+        msg: 'user already exists!'
       })
     }
 
@@ -71,7 +71,7 @@ const create = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-      message: 'server Error'
+      msg: 'server Error'
     })
   }
 }
@@ -130,7 +130,7 @@ const login = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-      message: 'server Error'
+      msg: 'server Error'
     })
   }
 }

@@ -12,6 +12,7 @@ const {
   removeExperience,
   addEducation,
   removeEducation,
+  githubRepos,
 } = require('../../controllers/profiles_controller');
 const {
   check
@@ -39,5 +40,6 @@ router.put('/education', [auth, [
   check('description', 'Description is required!').not().isEmpty()
 ]], addEducation);
 router.delete('/education/:edu_id', auth, removeEducation);
+router.get('/github/:username', githubRepos);
 
 module.exports = router;

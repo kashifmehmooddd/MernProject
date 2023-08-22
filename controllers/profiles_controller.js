@@ -1,6 +1,7 @@
 const {
   validationResult
 } = require("express-validator")
+const request = require("request")
 const Profile = require("../models/Profile")
 
 const index = async (req, res) => {
@@ -309,6 +310,29 @@ const removeEducation = async (req, res) => {
   }
 }
 
+const githubRepos = async (req, res) => {
+  try {
+    const options = {
+      uri: `https://api.github.com/users/${req.params.username}/repos`,
+      method: 'GET',
+      headers: { 'user-agent': 'node.js' }
+    }
+    request(options, (error, response, body) => {
+      if (error) console.log(error);
+
+      if (response.statusCode !== 200)
+      {
+        return res.status(404).json({ msg: "No github profile found!" })
+      }
+
+      res.send(JSON.parse(body).map(item => item.clone_url));
+    })
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ msg: "Server Error!" })
+  }
+}
+
 module.exports = {
   currentProfile,
   createOrUpdate,
@@ -318,5 +342,6 @@ module.exports = {
   addExperience,
   removeExperience,
   addEducation,
-  removeEducation
+  removeEducation,
+  githubRepos
 }

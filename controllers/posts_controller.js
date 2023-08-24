@@ -2,9 +2,6 @@ const {
   validationResult
 } = require("express-validator");
 const Post = require("../models/Post");
-const {
-  findOne
-} = require("../models/User");
 const User = require("../models/User")
 
 const index = async (req, res) => {

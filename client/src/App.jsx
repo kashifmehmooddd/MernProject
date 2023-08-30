@@ -1,36 +1,37 @@
 
 import './App.css';
+import { useEffect } from 'react';
 import Landing from './pages/landing/Landing';
 import Navbar from './components/navbar/Navbar';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Login from './pages/login/Login';
 import Register from './pages/register/Register';
 import Alert from './components/Alert';
+import { loadUser } from './actions/auth';
+import { connect } from 'react-redux';
+import setAuthToken from './utils/setAuthToken';
 
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Landing />,
-  },
-  {
-    path: 'login',
-    element: <Login />
-  },
-  {
-    path: 'register',
-    element: <Register />
-  }
-]);
+if (localStorage.token) {
+  setAuthToken(localStorage.token);
+}
 
-const App = () => {
+const App = ({ loadUser }) => {
+  useEffect(() => {
+    loadUser();
+  }, [])
+
   return (
     <div className="App">
       <Alert />
       <Navbar />
-      <RouterProvider router={router} />
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
     </div>
   );
 }
 
-export default App;
+export default connect(null, { loadUser })(App);

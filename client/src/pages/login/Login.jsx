@@ -1,23 +1,22 @@
 import { useState } from 'react';
-import { login } from '../../components/api/user';
-import { Link } from 'react-router-dom';
+import { login } from '../../actions/auth';
+import { Link, Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { setAlert } from '../../actions/alert';
 
-const Login = ({ setAlert }) => {
+const Login = ({ setAlert, login, isAuthenticated }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const response = await login({ email, password })
-    if (response.status === 200) {
-      setAlert(`login successfull with ${response.data.token}`, 'success')
-    } else {
-      setAlert(response.data.msg, 'danger')
-    }
+    login({ email, password })
   };
 
+  if (isAuthenticated) {
+    setAlert('You are signed in!', 'success');
+    return <Navigate to='/' />
+  }
 
   return (
     <div className="container mt-5">
@@ -69,4 +68,11 @@ const Login = ({ setAlert }) => {
   );
 };
 
-export default connect(null, { setAlert })(Login);
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(mapStateToProps, {
+  setAlert,
+  login,
+})(Login);

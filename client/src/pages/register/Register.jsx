@@ -1,22 +1,24 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { setAlert } from '../../actions/alert';
-import { register } from '../../components/api/user';
+import { register } from '../../actions/auth';
 
-const Register = ({ setAlert }) => {
+const Register = ({ setAlert, register, isAuthenticated }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleRegister = async () => {
-    const response = await register({ name, email, password })
-    if (response.status === 200) {
-      setAlert(`Registration successfull with ${response.data.token}`, 'success')
-    } else {
-      setAlert(response.data.msg, 'danger')
-    }
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    register({ name, email, password })
   }
+
+  if (isAuthenticated) {
+    setAlert('You are signed in!', 'success');
+    return <Navigate to='/' />
+  }
+
   return (
     <div className="container mt-5">
       <div className="row justify-content-center">
@@ -80,5 +82,9 @@ const Register = ({ setAlert }) => {
   );
 }
 
-export default connect(null, { setAlert })(Register);
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(mapStateToProps, { setAlert, register })(Register);
 

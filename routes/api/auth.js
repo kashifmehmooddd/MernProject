@@ -7,7 +7,7 @@ router.get('/', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user).select('-password');
     if (user) {
-      res.send(user);
+      res.send({user});
     } else {
       res.status(400).json({
         errors: [{

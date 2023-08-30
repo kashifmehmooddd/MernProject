@@ -1,6 +1,7 @@
+import { connect } from 'react-redux';
 import './Landing.css'
 
-const Landing = () => {
+const Landing = ({ isAuthenticated }) => {
   return (
     <div>
       <div className="landing">
@@ -10,8 +11,10 @@ const Landing = () => {
           <p className='text-center'>Lets Connect with the developers all around the world</p>
 
           <div className="buttons">
-            <button className='btn btn-outline-dark m-1'>Login</button>
-            <button className='btn btn-dark m-1'>Signup</button>
+            {!isAuthenticated && <><button className='btn btn-outline-dark m-1'>Login</button>
+              <button className='btn btn-dark m-1'>Signup</button></>}
+            {isAuthenticated && <>
+              You are Signed in!</>}
           </div>
         </div>
       </div>
@@ -19,5 +22,8 @@ const Landing = () => {
   );
 }
 
+const mapStateToPros = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+})
 
-export default Landing;
+export default connect(mapStateToPros)(Landing);

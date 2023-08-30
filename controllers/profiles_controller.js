@@ -7,7 +7,7 @@ const Profile = require("../models/Profile")
 const index = async (req, res) => {
 
   try {
-    const profiles = await Profile.find()
+    const profiles = await Profile.find().populate('user', ['name', 'avatar']);
     res.json(profiles)
   } catch (err) {
     console.log(err);

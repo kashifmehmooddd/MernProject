@@ -10,7 +10,8 @@ import {
   USER_LOADED,
   AUTH_ERROR,
   LOGIN_SUCCESS,
-  LOGIN_FAIL
+  LOGIN_FAIL,
+  LOGOUT_USER
 } from "./types";
 
 const URL = 'http://localhost:3001/api/'
@@ -83,6 +84,12 @@ export const login = (data) => async dispatch => {
   } catch (error) {
     alert(error.message);
   }
+}
+
+export const logout = () => dispatch => {
+  dispatch({
+    type: LOGOUT_USER
+  })
 }
 
 

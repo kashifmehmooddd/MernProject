@@ -4,6 +4,7 @@ const intitialState = {
   token: localStorage.getItem('token'),
   isAuthenticated: null,
   user: null,
+  profile: null,
   loading: true
 }
 
@@ -34,7 +35,9 @@ export default function (state = intitialState, action) {
       return {
         ...state,
         isAuthenticated: false,
-        loading: false
+        loading: false,
+        user: null,
+        profile: null
       }
     default:
       return state;

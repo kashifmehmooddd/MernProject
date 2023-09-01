@@ -15,7 +15,7 @@ const Login = ({ setAlert, login, isAuthenticated }) => {
 
   if (isAuthenticated) {
     setAlert('You are signed in!', 'success');
-    return <Navigate to='/' />
+    return <Navigate to='/dashboard' />
   }
 
   return (

@@ -64,7 +64,8 @@ const create = async (req, res) => {
     }, (err, token) => {
       if (err) throw err;
       res.send({
-        token
+        token,
+        user
       });
     })
 
@@ -77,7 +78,6 @@ const create = async (req, res) => {
 }
 
 const login = async (req, res) => {
-  console.log(req.body)
   const errors = validationResult(req)
 
   if (!errors.isEmpty()) {
@@ -121,8 +121,10 @@ const login = async (req, res) => {
       expiresIn: 360000
     }, (err, token) => {
       if (err) throw err;
+      delete user.password;
       res.send({
-        token
+        token,
+        user
       });
     })
 

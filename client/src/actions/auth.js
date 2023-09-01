@@ -3,7 +3,9 @@ import axios from "axios";
 import {
   postApi
 } from "../components/api/API";
-import { setAlert } from "./alert";
+import {
+  setAlert
+} from "./alert";
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
@@ -18,18 +20,30 @@ const URL = 'http://localhost:3001/api/'
 
 export const loadUser = () => async dispatch => {
 
-    if (localStorage.token)
-    {
-      setAuthToken(localStorage.token)
-    }
+  if (localStorage.token) {
+    setAuthToken(localStorage.token)
+  }
   try {
-    const response = await axios.get(`${URL}auth/`)
+    const user = await axios.get(`${URL}auth/`)
+
     dispatch({
       type: USER_LOADED,
       payload: {
-        user: response.data.user
+        user: user.data.user,
       }
     });
+
+    axios.get(`${URL}profile/me`).then(res => {
+      dispatch({
+        type: USER_LOADED,
+        payload: {
+          profile: res.data
+        }
+      });
+    }).catch(err => {
+      console.log("profile not found!");
+    })
+
   } catch (error) {
     dispatch({
       type: AUTH_ERROR
@@ -44,13 +58,14 @@ export const register = (data) => async dispatch => {
       data
     })
     if (response.status === 200) {
-      dispatch(setAlert("Login Successful!", 'success'));
       dispatch({
         type: REGISTER_SUCCESS,
         payload: {
           token: response.data.token,
+          user: response.data.user
         }
       })
+      dispatch(setAlert("Login Successful!", 'success'));
     } else {
       dispatch(setAlert(response.data.msg, 'danger'));
       dispatch({
@@ -73,8 +88,23 @@ export const login = (data) => async dispatch => {
         type: LOGIN_SUCCESS,
         payload: {
           token: response.data.token,
+          user: response.data.user,
         }
       })
+
+      setAuthToken(response.data.token);
+
+      axios.get(`${URL}profile/me`).then(res => {
+        dispatch({
+          type: USER_LOADED,
+          payload: {
+            profile: res.data
+          }
+        });
+      }).catch(err => {
+        console.log("profile not found!");
+      })
+
     } else {
       dispatch(setAlert(response.data.msg, 'danger'));
       dispatch({
@@ -82,7 +112,7 @@ export const login = (data) => async dispatch => {
       })
     }
   } catch (error) {
-    alert(error.message);
+    console.log(error);
   }
 }
 
@@ -91,5 +121,3 @@ export const logout = () => dispatch => {
     type: LOGOUT_USER
   })
 }
-
-

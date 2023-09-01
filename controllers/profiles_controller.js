@@ -140,7 +140,7 @@ const currentProfile = async (req, res) => {
   try {
     const profile = await Profile.findOne({
       user: req.user
-    }).populate('user', ['name', 'avatar'])
+    })
 
     if (!profile) {
       res.status(400).json({

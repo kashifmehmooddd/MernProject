@@ -6,7 +6,7 @@ const Experience = ({ experience, deleteExperience }) => {
     deleteExperience(id);
   };
   return (
-    <div className="card mb-3">
+    <div className="card mb-3" key={experience._id}>
       <div className="card-body">
         <h5 className="card-title">{experience.company}</h5>
         <h6 className="card-subtitle mb-2 text-muted">{experience.title}</h6>

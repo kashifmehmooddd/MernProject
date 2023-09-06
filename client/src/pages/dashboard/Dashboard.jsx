@@ -23,13 +23,13 @@ const Dashboard = ({ profile, user }) => {
         </div>
       </div>
       <div className="d-flex justify-content-center w-100 m-2 align-item-center">
-        <div class="container mt-5">
-          <h1 class="mb-4">Education</h1>
+        <div className="container mt-5">
+          <h1 className="mb-4">Education</h1>
           {profile?.education?.length > 0 ? (
             <>
               {" "}
               {profile?.education?.map((education) => (
-                <Education education={education} />
+                <Education education={education} key={ education._id } />
               ))}
             </>
           ) : (
@@ -43,13 +43,13 @@ const Dashboard = ({ profile, user }) => {
         </div>
       </div>
       <div className="d-flex justify-content-center w-100 m-2 align-item-center">
-        <div class="container mt-5">
-          <h1 class="mb-4">Experience</h1>
+        <div className="container mt-5">
+          <h1 className="mb-4">Experience</h1>
           {profile?.experience?.length > 0 ? (
             <>
               {" "}
               {profile?.experience?.map((experience) => (
-                <Experience experience={experience} />
+                <Experience experience={experience} key={experience._id} />
               ))}
             </>
           ) : (

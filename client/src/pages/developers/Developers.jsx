@@ -15,7 +15,7 @@ const Developers = ({ getProfiles, profiles }) => {
       {profiles.length > 0 && (
         <>
           {profiles.map((profile) => (
-            <div className="card m-5 overflow-auto" key={profile.id}>
+            <div className="card m-5 overflow-auto" key={profile._id}>
               <div className="profile m-5">
                 <div>
                   <img src={profile.user.avatar} alt="John Doe" />

@@ -1,46 +1,19 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import Education from "../../components/Education";
+import Experience from "../../components/Experience";
+import Profile from "../../components/Profile";
 
 const Dashboard = ({ profile, user }) => {
   return (
     <div className="container">
-      <div className="d-flex justify-content-center w-100 m-5 align-item-center">
+      <div className="d-flex justify-content-center w-100 m-2 align-item-center">
         {!profile ? (
           <> Hey {user.name}! You haven't setup your profile </>
         ) : (
           <>
-            <div className="card m-5 overflow-auto">
-              <div className="profile m-5">
-                <div>
-                  <img src={user.avatar} alt="John Doe" />
-                </div>
-                <div>
-                  <h2>{user.name}</h2>
-                  <p>{profile.status}</p>
-                </div>
-                <div className="ms-5">
-                  <div className="company m-2">
-                    <strong>Company: </strong>
-                    {profile.company.toUpperCase()}
-                  </div>
-                  <div className="githubusername m-2">
-                    <strong>github: </strong>
-                    {profile.githubusername?.toUpperCase()}
-                  </div>
-                  <div className="website m-2">
-                    <strong>website: </strong>
-                    <a href={profile.website} target="_blank">
-                      Visit my website
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div className="profile skills">
-                <strong className="ms-5">Skills: </strong>
-                <div className="m-1">{profile.skills.join(", ")}</div>
-              </div>
-            </div>
+            <Profile user={user} profile={profile} />
           </>
         )}
         <div className="ms-5">
@@ -48,9 +21,44 @@ const Dashboard = ({ profile, user }) => {
             Set up Profile
           </Link>
         </div>
-        <div className="ms-5">
-          <Link to="education" className="btn btn-large btn-dark">
-            Set up Education
+      </div>
+      <div className="d-flex justify-content-center w-100 m-2 align-item-center">
+        <div class="container mt-5">
+          <h1 class="mb-4">Education</h1>
+          {profile?.education?.length > 0 ? (
+            <>
+              {" "}
+              {profile?.education?.map((education) => (
+                <Education education={education} />
+              ))}
+            </>
+          ) : (
+            <>You havent add your education yet!</>
+          )}
+        </div>
+        <div className="ms-2">
+          <Link to="education" className="btn btn-large btn-dark w-100">
+            Add Education
+          </Link>
+        </div>
+      </div>
+      <div className="d-flex justify-content-center w-100 m-2 align-item-center">
+        <div class="container mt-5">
+          <h1 class="mb-4">Experience</h1>
+          {profile?.experience?.length > 0 ? (
+            <>
+              {" "}
+              {profile?.experience?.map((experience) => (
+                <Experience experience={experience} />
+              ))}
+            </>
+          ) : (
+            <>You havent add your experiences yet!</>
+          )}
+        </div>
+        <div className="ms-2">
+          <Link to="experience" className="btn btn-large btn-dark w-100">
+            Add Experience
           </Link>
         </div>
       </div>

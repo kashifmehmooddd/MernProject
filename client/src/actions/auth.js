@@ -12,6 +12,9 @@ import {
   LOGOUT_USER,
   SET_PROFILE,
   CREATE_EDUCATION,
+  DELETE_EDUCATION,
+  CREATE_EXPERIENCE,
+  DELETE_EXPERIENCE,
 } from "./types";
 import store from "../store";
 
@@ -161,7 +164,61 @@ export const createEducation = (data) => async (dispatch) => {
         profile: response.data,
       },
     });
+    store.dispatch(setAlert("Education has been added!", "success"));
   } catch (error) {
     console.log(error.response);
   }
 };
+
+export const deleteEducation = (id) => async dispatch => {
+  try {
+    const response = await axios.delete(`http://localhost:3001/api/profile/education/${id}`)
+    console.log(response);
+
+    dispatch({
+      type: DELETE_EDUCATION,
+      payload: {
+        profile: response.data
+      }
+    })
+    store.dispatch(setAlert("Education has been deleted!", "success"));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const createExperience = (data) => async (dispatch) => {
+  try {
+    const response = await axios.put(
+      "http://localhost:3001/api/profile/experience",
+      data
+    );
+
+    dispatch({
+      type: CREATE_EXPERIENCE,
+      payload: {
+        profile: response.data,
+      },
+    });
+    store.dispatch(setAlert("Experience has been added!", "success"));
+  } catch (error) {
+    console.log(error.response);
+  }
+};
+
+export const deleteExperience = (id) => async dispatch => {
+  try {
+    const response = await axios.delete(`http://localhost:3001/api/profile/experience/${id}`)
+    console.log(response);
+
+    dispatch({
+      type: DELETE_EXPERIENCE,
+      payload: {
+        profile: response.data
+      }
+    })
+    store.dispatch(setAlert("Experience has been deleted!", "success"));
+  } catch (error) {
+    console.log(error);
+  }
+}

@@ -14,6 +14,7 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
 import ProfileSetup from "./pages/dashboard/ProfileSetup";
 import NewEducation from "./pages/dashboard/NewEducation";
+import NewExperience from "./pages/dashboard/NewExperience";
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -26,8 +27,8 @@ const App = ({ loadUser }) => {
 
   return (
     <div className="App">
-      <Alert />
       <Navbar />
+      <Alert />
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
@@ -37,6 +38,7 @@ const App = ({ loadUser }) => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/dashboard/profile" element={<ProfileSetup />} />
           <Route path="/dashboard/education" element={<NewEducation />} />
+          <Route path="/dashboard/experience" element={<NewExperience />} />
         </Route>
       </Routes>
     </div>

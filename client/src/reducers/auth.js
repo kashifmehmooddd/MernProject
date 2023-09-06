@@ -8,6 +8,9 @@ import {
   LOGOUT_USER,
   SET_PROFILE,
   CREATE_EDUCATION,
+  DELETE_EDUCATION,
+  CREATE_EXPERIENCE,
+  DELETE_EXPERIENCE,
 } from "../actions/types";
 
 const intitialState = {
@@ -21,6 +24,9 @@ const intitialState = {
 export default function (state = intitialState, action) {
   const { type, payload } = action;
   switch (type) {
+    case CREATE_EXPERIENCE:
+    case DELETE_EXPERIENCE:
+    case DELETE_EDUCATION:
     case CREATE_EDUCATION:
     case SET_PROFILE:
     case USER_LOADED:

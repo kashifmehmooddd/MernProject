@@ -3,16 +3,17 @@ import { useState } from "react";
 import { connect } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import { setAlert } from "../../actions/alert";
-import { createEducation } from "../../actions/auth";
+import { createExperience } from "../../actions/auth";
 import $ from "jquery";
 
-const NewEducation = ({ profile, setAlert, createEducation }) => {
+const NewExperience = ({ profile, setAlert, createExperience }) => {
   const [formData, setFormData] = useState({
-    school: "",
+    company: "",
     description: "",
-    fieldofstudy: "",
+    title: "",
     from: "",
     to: "",
+    location: "",
     current: false,
   });
   const navigate = useNavigate();
@@ -43,33 +44,34 @@ const NewEducation = ({ profile, setAlert, createEducation }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await createEducation(formData);
+    console.log(formData);
+    await createExperience(formData);
     navigate("/dashboard");
   };
   return (
     <div className="container mt-5">
-      <h1> Add Your Education </h1>
+      <h1> Add Your Experience </h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label className="form-label">Schoool</label>
+          <label className="form-label">Company</label>
           <input
             type="text"
             className="form-control"
             id="company"
-            name="school"
-            value={formData.school}
+            name="company"
+            value={formData.company}
             onChange={handleChange}
             required
           />
         </div>
         <div className="mb-3">
-          <label className="form-label">Field of Study</label>
+          <label className="form-label">Title</label>
           <input
             type="text"
             className="form-control"
-            id="fieldofstudy"
-            name="fieldofstudy"
-            value={formData.fieldofstudy}
+            id="title"
+            name="title"
+            value={formData.title}
             onChange={handleChange}
             required
           />
@@ -143,6 +145,6 @@ const NewEducation = ({ profile, setAlert, createEducation }) => {
 const mapStatesToProps = (state) => ({
   profile: state.auth.profile,
 });
-export default connect(mapStatesToProps, { setAlert, createEducation })(
-  NewEducation
+export default connect(mapStatesToProps, { setAlert, createExperience })(
+  NewExperience
 );

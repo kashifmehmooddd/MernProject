@@ -18,7 +18,7 @@ const Profile = ({ profile, user }) => {
           </div>
           <div className="githubusername m-2">
             <strong>github: </strong>
-            {profile.githubusername?.toUpperCase()}
+            <a target="_blank" href={`https://github.com/${profile.githubusername}`}>{profile.githubusername?.toUpperCase()}</a>
           </div>
           <div className="website m-2">
             <strong>website: </strong>

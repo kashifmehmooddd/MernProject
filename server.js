@@ -4,15 +4,16 @@ const profileRouter = require('./routes/api/profile');
 const postsRouter = require('./routes/api/posts');
 const usersRouter = require('./routes/api/users');
 const authRouter = require('./routes/api/auth');
+const cors = require('cors')
 
 
 const app = express()
 
-const PORT = process.env.port || 3000
+const PORT = process.env.port || 3001
 
 connectDb();
 app.use(express.json({ extended: false }))
-
+app.use(cors());
 app.use('/api/profile', profileRouter);
 app.use('/api/posts', postsRouter);
 app.use('/api/users', usersRouter);

@@ -64,7 +64,8 @@ const create = async (req, res) => {
     }, (err, token) => {
       if (err) throw err;
       res.send({
-        token
+        token,
+        user
       });
     })
 
@@ -85,6 +86,8 @@ const login = async (req, res) => {
     })
   }
 
+
+
   const {
     email,
     password
@@ -98,9 +101,7 @@ const login = async (req, res) => {
 
     if (!user) {
       return res.status(400).json({
-        errors: [{
           msg: 'Invalid Credentials!'
-        }]
       })
     }
 
@@ -108,9 +109,7 @@ const login = async (req, res) => {
 
     if (!isMatch) {
       return res.status(400).json({
-        errors: [{
           msg: 'Invalid Credentials!'
-        }]
       })
     }
 
@@ -122,8 +121,10 @@ const login = async (req, res) => {
       expiresIn: 360000
     }, (err, token) => {
       if (err) throw err;
+      delete user.password;
       res.send({
-        token
+        token,
+        user
       });
     })
 

@@ -1,21 +1,21 @@
-import { useState } from 'react';
-import { login } from '../../actions/auth';
-import { Link, Navigate } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { setAlert } from '../../actions/alert';
+import { useState } from "react";
+import { login } from "../../actions/auth";
+import { Link, Navigate } from "react-router-dom";
+import { connect } from "react-redux";
+import { setAlert } from "../../actions/alert";
 
 const Login = ({ setAlert, login, isAuthenticated }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    login({ email, password })
+    login({ email, password });
   };
 
   if (isAuthenticated) {
-    setAlert('You are signed in!', 'success');
-    return <Navigate to='/' />
+    setAlert("You are signed in!", "success");
+    return <Navigate to="/dashboard" />;
   }
 
   return (
@@ -26,9 +26,7 @@ const Login = ({ setAlert, login, isAuthenticated }) => {
             <h2 className="text-center mb-4">Login</h2>
             <form onSubmit={handleLogin}>
               <div className="mb-3">
-                <label htmlFor="email" className="form-label">
-                  Email
-                </label>
+                <label className="form-label">Email</label>
                 <input
                   required
                   type="text"
@@ -39,9 +37,7 @@ const Login = ({ setAlert, login, isAuthenticated }) => {
                 />
               </div>
               <div className="mb-3">
-                <label htmlFor="password" className="form-label">
-                  Password
-                </label>
+                <label className="form-label">Password</label>
                 <input
                   required
                   type="password"
@@ -52,14 +48,13 @@ const Login = ({ setAlert, login, isAuthenticated }) => {
                 />
               </div>
               <div className="d-grid">
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                >
+                <button type="submit" className="btn btn-primary">
                   login
                 </button>
               </div>
-              <p>Don't have an Account? <Link to="/register">Sign up</Link></p>
+              <p>
+                Don't have an Account? <Link to="/register">Sign up</Link>
+              </p>
             </form>
           </div>
         </div>
@@ -68,8 +63,8 @@ const Login = ({ setAlert, login, isAuthenticated }) => {
   );
 };
 
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
 });
 
 export default connect(mapStateToProps, {

@@ -11,5 +11,4 @@ export const getProfiles = () => async dispatch => {
   } catch (error) {
     console.log(error.response);
   }
-
 }

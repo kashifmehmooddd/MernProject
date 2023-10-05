@@ -1,7 +1,7 @@
-DevSocializer <br>
+<h1>DevSocializer</h1> <br>
 DevSocializer is a social networking and portfolio platform for developers built using the MERN stack (MongoDB, Express, React, Node.js). <br>
 
-Features <br>
+<h1>Features</h1>h1> <br>
 Developer profiles - Create a customizable portfolio to showcase your work experience, education, skills, projects, etc. <br>
 Feed - Share thoughts and ideas with other developers in a social feed. Comment, like, and discuss posts. <br>
 Connections - Follow and connect with other developers. Grow your network. <br>
@@ -11,7 +11,7 @@ Search - Easily find developers and content based on skills, interests, company 
 Getting Started
 These instructions will help you get a copy of the project up and running on your local machine for development and testing purposes. <br>
 
-Prerequisites<br>
+<h1>Prerequisites</h1>h1><br>
 Node.js<br>
 MongoDB<br>
 Installing<br>

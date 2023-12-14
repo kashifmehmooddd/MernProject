@@ -28,61 +28,64 @@ const Posts = ({ posts, getPosts, user, profile, createPost, se }) => {
 
   return (
     <div className='container d-flex flex-column'>
-      <div className='create-post my-3'>
-        <button
-          className='float-end btn btn-outline-dark'
-          onClick={handleCreate}
-        >
-          Share Your thought
-        </button>
-      </div>
+
 
       {profile && (
-        <div class='modal' tabindex='-1'>
-          <div class='modal-dialog'>
-            <div class='modal-content'>
-              <div class='modal-header'>
-                <h5 class='modal-title'>
-                  <div className='media'>
-                    <div className='d-flex align-items-center'>
-                      <img
-                        src={user.avatar}
-                        alt='User 1 Avatar'
-                        className='mr-3 rounded-circle'
-                        style={{ width: '40px' }}
-                      />
-                      <h5 className='mx-2'>{user.name}</h5>
+        <> <div className='create-post my-3'>
+          <button
+            className='float-end btn btn-outline-dark'
+            onClick={handleCreate}
+          >
+            Share Your thought
+          </button>
+        </div>
+
+          <div class='modal' tabindex='-1'>
+            <div class='modal-dialog'>
+              <div class='modal-content'>
+                <div class='modal-header'>
+                  <h5 class='modal-title'>
+                    <div className='media'>
+                      <div className='d-flex align-items-center'>
+                        <img
+                          src={user.avatar}
+                          alt='User 1 Avatar'
+                          className='mr-3 rounded-circle'
+                          style={{ width: '40px' }}
+                        />
+                        <h5 className='mx-2'>{user.name}</h5>
+                      </div>
                     </div>
+                  </h5>
+                  <button
+                    type='button'
+                    class='btn-close'
+                    data-bs-dismiss='modal'
+                    aria-label='Close'
+                    onClick={handleRemoveModal}
+                  ></button>
+                </div>
+                <div class='modal-body'>
+                  <div class='mb-3'>
+                    <textarea
+                      required
+                      class='form-control'
+                      id='text'
+                      rows='3'
+                      placeholder='Share your thought...'
+                    ></textarea>
                   </div>
-                </h5>
-                <button
-                  type='button'
-                  class='btn-close'
-                  data-bs-dismiss='modal'
-                  aria-label='Close'
-                  onClick={handleRemoveModal}
-                ></button>
-              </div>
-              <div class='modal-body'>
-                <div class='mb-3'>
-                  <textarea
-                    required
-                    class='form-control'
-                    id='text'
-                    rows='3'
-                    placeholder='Share your thought...'
-                  ></textarea>
+                </div>
+                <div class='modal-footer'>
+                  <button type='button' class='btn btn-dark' onClick={handleShare}>
+                    Share
+                  </button>
                 </div>
               </div>
-              <div class='modal-footer'>
-                <button type='button' class='btn btn-dark' onClick={handleShare}>
-                  Share
-                </button>
-              </div>
             </div>
-          </div>
-        </div>
+          </div> </>
       )}
+
       <div className='mt-5 posts'>
         {posts.map((post) => (
           <div className='card mb-4' key={post._id}>

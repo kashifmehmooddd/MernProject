@@ -1,6 +1,6 @@
-import { getApi, postApi } from '../components/api/API';
+import { getApi, postApi, putApi } from '../components/api/API';
 import setAuthToken from '../utils/setAuthToken';
-import { SET_POSTS, SET_PROFILES, CREATE_POST } from './types';
+import { SET_POSTS, SET_PROFILES, CREATE_POST, ADD_COMMENT } from './types';
 import store from '../store';
 import { setAlert } from './alert';
 
@@ -36,3 +36,22 @@ export const createPost = (data) => async (dispatch) => {
     return false;
   }
 };
+
+export const addComment =
+  ({ id, text }) =>
+  async (dispatch) => {
+    const response = await putApi({
+      endpoint: `posts/${id}/comment`,
+      data: { text },
+    });
+
+    if (response.status === 200) {
+      dispatch({
+        type: ADD_COMMENT,
+        payload: response.data,
+      });
+      store.dispatch(setAlert('Added Comment!', 'success'));
+    } else {
+      store.dispatch(setAlert('Error!', 'danger'));
+    }
+  };

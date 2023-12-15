@@ -12,6 +12,16 @@ export const postApi = async ({ endpoint, data, options = {} }) => {
   }
 }
 
+export const putApi = async ({ endpoint, data, options = {} }) => {
+  try {
+    const response = await axios.put(`${URL}${endpoint}`, data, options)
+    return response
+  }
+  catch (err) {
+    return err.response
+  }
+}
+
 export const getApi = async ({ endpoint, options = {} }) => {
   try {
     const response = await axios.get(`${URL}${endpoint}`, options)

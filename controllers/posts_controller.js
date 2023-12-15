@@ -46,7 +46,7 @@ const create = async (req, res) => {
   }
 
   try {
-    const { text } = req.body;
+    const { text } = req.body; 
     const user = await User.findById(req.user).select('-password');
     const postfields = {
       text,

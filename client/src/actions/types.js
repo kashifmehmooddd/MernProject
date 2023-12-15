@@ -15,3 +15,4 @@ export const CREATE_EXPERIENCE = 'CREATE_EXPERIENCE';
 export const DELETE_EXPERIENCE = 'DELETE_EXPERIENCE';
 export const SET_POSTS = 'SET_POSTS';
 export const CREATE_POST = 'CREATE_POST';
+export const ADD_COMMENT = 'ADD_COMMENT';

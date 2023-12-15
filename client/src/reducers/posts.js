@@ -1,4 +1,4 @@
-import { CREATE_POST, SET_POSTS } from '../actions/types';
+import { ADD_COMMENT, CREATE_POST, SET_POSTS } from '../actions/types';
 
 const intitialState = [];
 
@@ -10,6 +10,8 @@ export default function (state = intitialState, action) {
       return [...payload];
     case CREATE_POST:
       return [...state, payload];
+    case ADD_COMMENT:
+      return state.map((obj) => (obj._id === payload._id ? payload : obj));
     default:
       return state;
   }

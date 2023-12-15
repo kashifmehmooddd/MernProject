@@ -2,11 +2,11 @@ import React from 'react';
 import './post.css';
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { getPosts, createPost } from '../../actions/posts';
+import { getPosts, createPost, addComment } from '../../actions/posts';
 import { setAlert } from '../../actions/alert';
 import $ from 'jquery';
 
-const Posts = ({ posts, getPosts, user, profile, createPost, se }) => {
+const Posts = ({ posts, getPosts, user, profile, createPost, addComment }) => {
   const handleCreate = () => {
     $('.modal').addClass('d-block');
   };
@@ -22,6 +22,14 @@ const Posts = ({ posts, getPosts, user, profile, createPost, se }) => {
         $('#text').val('');
         $('.modal').removeClass('d-block');
       }
+    });
+  };
+
+  const handleComment = (e, id) => {
+    e.preventDefault();
+    addComment({
+      text: e.target.querySelector('input.form-control').value,
+      id,
     });
   };
 
@@ -108,19 +116,33 @@ const Posts = ({ posts, getPosts, user, profile, createPost, se }) => {
             </div>
             <div className='card-footer'>
               {post?.comments.map((comment, index) => (
-                <div className='media' key={index}>
-                  <img
-                    alt='User 2 Avatar'
-                    src={comment.avatar}
-                    className='mr-3 rounded-circle'
-                    s
-                  />
-                  <div className='media-body'>
-                    <strong>{comment.name}</strong> {comment.text}
+                <>
+                  <div className='media' key={index}>
+                    <div className='d-flex align-items-center'>
+                      <img
+                        src={comment.avatar}
+                        className='mr-3 rounded-circle'
+                      />
+                      <strong className='mx-2'>{comment.name}</strong>
+                    </div>
+                    <div className='media-body'>{comment.text}</div>
                   </div>
-                </div>
+                  <hr />
+                </>
               ))}
             </div>
+
+            <form onSubmit={(e) => handleComment(e, post._id)}>
+              <div className='d-flex comment'>
+                <input
+                  required
+                  className='form-control'
+                  id={post._id}
+                  placeholder='Add your comment...'
+                />{' '}
+                <button className='btn btn-dark mx-2'>Comment</button>
+              </div>
+            </form>
           </div>
         ))}
       </div>
@@ -134,4 +156,9 @@ const mapStateToProps = (state) => ({
   user: state.auth.user,
 });
 
-export default connect(mapStateToProps, { getPosts, createPost, setAlert })(Posts);
+export default connect(mapStateToProps, {
+  getPosts,
+  createPost,
+  setAlert,
+  addComment,
+})(Posts);

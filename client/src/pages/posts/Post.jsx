@@ -42,7 +42,7 @@ const Posts = ({ posts, getPosts, user, profile, createPost, se }) => {
               Share Your thought
             </button>
           </div>
-          <div class='modal' tabindex='-1'>
+          <div class='modal' tabindex='-1' style={{ top: '100px' }}>
             <div class='modal-dialog'>
               <div class='modal-content'>
                 <form onSubmit={handleShare}>

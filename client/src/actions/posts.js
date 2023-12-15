@@ -6,7 +6,9 @@ import { setAlert } from './alert';
 
 export const getPosts = () => async (dispatch) => {
   try {
-    const response = await getApi({ endpoint: 'posts' });
+    const response = await getApi({
+      endpoint: 'posts',
+    });
     dispatch({
       type: SET_POSTS,
       payload: response.data,
@@ -17,14 +19,20 @@ export const getPosts = () => async (dispatch) => {
 };
 
 export const createPost = (data) => async (dispatch) => {
-  try {
-    const response = await postApi({ endpoint: 'posts', data });
+  const response = await postApi({
+    endpoint: 'posts',
+    data,
+  });
+  if (response.status === 200) {
     dispatch({
       type: CREATE_POST,
       payload: response.data,
     });
     store.dispatch(setAlert('Post has been shared', 'success'));
-  } catch (error) {
-    console.log(error);
+    return true;
+  } else {
+    let errors = response.data.errors.map((hash) => hash.msg).join(', ');
+    store.dispatch(setAlert(errors, 'danger'));
+    return false;
   }
 };

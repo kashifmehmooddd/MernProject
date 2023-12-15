@@ -36,6 +36,9 @@ const Navbar = ({ isAuthenticated, logout, setAlert, authLoading }) => {
             <li className="nav-item">
               <Link to='/devs' className='nav-link'>Developers</Link>
             </li>
+            <li className="nav-item">
+              <Link to='/posts' className='nav-link'>Posts</Link>
+            </li>
             {authLoading ? (<li className="nav-item">
               <Link className='nav-link'>loading...</Link>
             </li>) : (<>{

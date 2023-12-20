@@ -2,11 +2,11 @@ import React from 'react';
 import './post.css';
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { getPosts, createPost, addComment } from '../../actions/posts';
+import { getPosts, createPost, addComment, removeComment } from '../../actions/posts';
 import { setAlert } from '../../actions/alert';
 import $ from 'jquery';
 
-const Posts = ({ posts, getPosts, user, profile, createPost, addComment }) => {
+const Posts = ({ posts, getPosts, user, profile, createPost, addComment, removeComment }) => {
   const handleCreate = () => {
     $('.modal').addClass('d-block');
   };
@@ -33,6 +33,10 @@ const Posts = ({ posts, getPosts, user, profile, createPost, addComment }) => {
     });
   };
 
+  const deleteComment = (postId, commentId) => {
+    removeComment({ postId, commentId })
+  };
+
   useEffect(() => {
     getPosts();
   }, []);
@@ -50,12 +54,12 @@ const Posts = ({ posts, getPosts, user, profile, createPost, addComment }) => {
               Share Your thought
             </button>
           </div>
-          <div class='modal' tabindex='-1' style={{ top: '100px' }}>
-            <div class='modal-dialog'>
-              <div class='modal-content'>
+          <div className='modal' tabindex='-1' style={{ top: '100px' }}>
+            <div className='modal-dialog'>
+              <div className='modal-content'>
                 <form onSubmit={handleShare}>
-                  <div class='modal-header'>
-                    <h5 class='modal-title'>
+                  <div className='modal-header'>
+                    <h5 className='modal-title'>
                       <div className='media'>
                         <div className='d-flex align-items-center'>
                           <img
@@ -70,25 +74,25 @@ const Posts = ({ posts, getPosts, user, profile, createPost, addComment }) => {
                     </h5>
                     <button
                       type='button'
-                      class='btn-close'
+                      className='btn-close'
                       data-bs-dismiss='modal'
                       aria-label='Close'
                       onClick={handleRemoveModal}
                     ></button>
                   </div>
-                  <div class='modal-body'>
-                    <div class='mb-3'>
+                  <div className='modal-body'>
+                    <div className='mb-3'>
                       <textarea
                         required
                         type='text'
-                        class='form-control'
+                        className='form-control'
                         id='text'
                         placeholder='Share your thought...'
                       />
                     </div>
                   </div>
-                  <div class='modal-footer'>
-                    <button type='submit' class='btn btn-dark'>
+                  <div className='modal-footer'>
+                    <button type='submit' className='btn btn-dark'>
                       Share
                     </button>
                   </div>
@@ -119,11 +123,16 @@ const Posts = ({ posts, getPosts, user, profile, createPost, addComment }) => {
                 <>
                   <div className='media' key={index}>
                     <div className='d-flex align-items-center'>
-                      <img
-                        src={comment.avatar}
-                        className='mr-3 rounded-circle'
-                      />
-                      <strong className='mx-2'>{comment.name}</strong>
+                      <div className='w-100'>
+                        <img
+                          alt={comment.name}
+                          src={comment.avatar}
+                          className='mr-3 rounded-circle'
+                        />
+
+                        <strong className='mx-2'>{comment.name}</strong>
+                        {(user && comment.user === user._id) && <button onClick={() => deleteComment(post._id, comment._id)} className='float-end btn btn-danger'>delete</button>}
+                      </div>
                     </div>
                     <div className='media-body'>{comment.text}</div>
                   </div>
@@ -161,4 +170,5 @@ export default connect(mapStateToProps, {
   createPost,
   setAlert,
   addComment,
+  removeComment
 })(Posts);

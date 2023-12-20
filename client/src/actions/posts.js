@@ -1,6 +1,12 @@
-import { getApi, postApi, putApi } from '../components/api/API';
+import { deleteApi, getApi, postApi, putApi } from '../components/api/API';
 import setAuthToken from '../utils/setAuthToken';
-import { SET_POSTS, SET_PROFILES, CREATE_POST, ADD_COMMENT } from './types';
+import {
+  SET_POSTS,
+  SET_PROFILES,
+  CREATE_POST,
+  ADD_COMMENT,
+  REMOVE_COMMENT,
+} from './types';
 import store from '../store';
 import { setAlert } from './alert';
 
@@ -42,7 +48,9 @@ export const addComment =
   async (dispatch) => {
     const response = await putApi({
       endpoint: `posts/${id}/comment`,
-      data: { text },
+      data: {
+        text,
+      },
     });
 
     if (response.status === 200) {
@@ -51,6 +59,24 @@ export const addComment =
         payload: response.data,
       });
       store.dispatch(setAlert('Added Comment!', 'success'));
+    } else {
+      store.dispatch(setAlert('Error!', 'danger'));
+    }
+  };
+
+export const removeComment =
+  ({ postId, commentId }) =>
+  async (dispatch) => {
+    const response = await deleteApi({
+      endpoint: `posts/${postId}/comment/${commentId}`,
+    });
+
+    if (response.status === 200) {
+      dispatch({
+        type: REMOVE_COMMENT,
+        payload: response.data,
+      });
+      store.dispatch(setAlert('Removed your comment!', 'success'));
     } else {
       store.dispatch(setAlert('Error!', 'danger'));
     }

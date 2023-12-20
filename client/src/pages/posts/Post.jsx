@@ -33,10 +33,6 @@ const Posts = ({ posts, getPosts, user, profile, createPost, addComment, removeC
     });
   };
 
-  const deleteComment = (postId, commentId) => {
-    removeComment({ postId, commentId })
-  };
-
   useEffect(() => {
     getPosts();
   }, []);
@@ -131,7 +127,7 @@ const Posts = ({ posts, getPosts, user, profile, createPost, addComment, removeC
                         />
 
                         <strong className='mx-2'>{comment.name}</strong>
-                        {(user && comment.user === user._id) && <button onClick={() => deleteComment(post._id, comment._id)} className='float-end btn btn-danger'>delete</button>}
+                        {(user && comment.user === user._id) && <button onClick={() => removeComment({ postId: post._id, commentId: comment._id })} className='float-end btn btn-danger'>delete</button>}
                       </div>
                     </div>
                     <div className='media-body'>{comment.text}</div>

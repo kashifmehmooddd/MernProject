@@ -1,15 +1,15 @@
-const { validationResult } = require("express-validator");
-const request = require("request");
-const Profile = require("../models/Profile");
+const { validationResult } = require('express-validator');
+const request = require('request');
+const Profile = require('../models/Profile');
 
 const index = async (req, res) => {
   try {
-    const profiles = await Profile.find().populate("user", ["name", "avatar"]);
+    const profiles = await Profile.find().populate('user', ['name', 'avatar']);
     res.json(profiles);
   } catch (err) {
     console.log(err);
     res.status(500).json({
-      errors: "Server Error!",
+      errors: 'Server Error!',
     });
   }
 };
@@ -18,23 +18,23 @@ const show = async (req, res) => {
   try {
     const profile = await Profile.findOne({
       user: req.params.user_id,
-    }).populate("user", ["name", "avatar"]);
+    }).populate('user', ['name', 'avatar']);
 
     if (!profile) {
       return res.status(400).json({
-        errors: "There is no profile for this user!",
+        errors: 'There is no profile for this user!',
       });
     }
 
     res.send(profile);
   } catch (err) {
-    if (err.kind == "ObjectId") {
+    if (err.kind == 'ObjectId') {
       return res.status(400).json({
-        errors: "There is no profile for this user!",
+        errors: 'There is no profile for this user!',
       });
     }
     res.status(500).json({
-      errors: "Server Error!",
+      errors: 'Server Error!',
     });
   }
 };
@@ -72,7 +72,7 @@ const createOrUpdate = async (req, res) => {
   if (bio) profilefields.bio = bio;
 
   if (skills) {
-    profilefields.skills = skills.split(",").map((skill) => skill.trim());
+    profilefields.skills = skills.split(',').map((skill) => skill.trim());
   }
 
   profilefields.socials = {};
@@ -108,7 +108,7 @@ const createOrUpdate = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({
-      errors: "Server Error!",
+      errors: 'Server Error!',
     });
   }
 };
@@ -123,16 +123,16 @@ const remove = async (req, res) => {
     });
 
     res.json({
-      msg: "User deleted!",
+      msg: 'User deleted!',
     });
   } catch (err) {
-    if (err.kind == "ObjectId") {
+    if (err.kind == 'ObjectId') {
       return res.status(400).json({
-        errors: "There is no profile for this user!",
+        errors: 'There is no profile for this user!',
       });
     }
     res.status(500).json({
-      errors: "Server Error!",
+      errors: 'Server Error!',
     });
   }
 };
@@ -141,7 +141,7 @@ const currentProfile = async (req, res) => {
   try {
     const profile = await Profile.findOne({
       user: req.user,
-    });
+    }).populate('user', ['name', 'avatar']);
 
     if (!profile) {
       return res.status(400).json({
@@ -155,7 +155,7 @@ const currentProfile = async (req, res) => {
     res.status(500).json({
       errors: [
         {
-          msg: "server Error!",
+          msg: 'server Error!',
         },
       ],
     });
@@ -197,13 +197,13 @@ const addExperience = async (req, res) => {
     await profile.save();
     res.send(profile);
   } catch (err) {
-    if (err.kind == "ObjectId") {
+    if (err.kind == 'ObjectId') {
       return res.status(400).json({
-        errors: "Profile not found",
+        errors: 'Profile not found',
       });
     }
     res.status(500).json({
-      errors: "Server Error!",
+      errors: 'Server Error!',
     });
   }
 };
@@ -220,13 +220,13 @@ const removeExperience = async (req, res) => {
     await profile.save();
     res.send(profile);
   } catch (err) {
-    if (err.kind == "ObjectId") {
+    if (err.kind == 'ObjectId') {
       return res.status(400).json({
-        errors: "Profile not found",
+        errors: 'Profile not found',
       });
     }
     res.status(500).json({
-      errors: "Server Error!",
+      errors: 'Server Error!',
     });
   }
 };
@@ -268,13 +268,13 @@ const addEducation = async (req, res) => {
     res.send(profile);
   } catch (err) {
     console.log(err);
-    if (err.kind == "ObjectId") {
+    if (err.kind == 'ObjectId') {
       return res.status(400).json({
-        errors: "Profile not found",
+        errors: 'Profile not found',
       });
     }
     res.status(500).json({
-      errors: "Server Error!",
+      errors: 'Server Error!',
     });
   }
 };
@@ -291,13 +291,13 @@ const removeEducation = async (req, res) => {
     await profile.save();
     res.send(profile);
   } catch (err) {
-    if (err.kind == "ObjectId") {
+    if (err.kind == 'ObjectId') {
       return res.status(400).json({
-        errors: "Profile not found",
+        errors: 'Profile not found',
       });
     }
     res.status(500).json({
-      errors: "Server Error!",
+      errors: 'Server Error!',
     });
   }
 };
@@ -306,9 +306,9 @@ const githubRepos = async (req, res) => {
   try {
     const options = {
       uri: `https://api.github.com/users/${req.params.username}/repos`,
-      method: "GET",
+      method: 'GET',
       headers: {
-        "user-agent": "node.js",
+        'user-agent': 'node.js',
       },
     };
     request(options, (error, response, body) => {
@@ -316,7 +316,7 @@ const githubRepos = async (req, res) => {
 
       if (response.statusCode !== 200) {
         return res.status(404).json({
-          msg: "No github profile found!",
+          msg: 'No github profile found!',
         });
       }
 
@@ -325,7 +325,7 @@ const githubRepos = async (req, res) => {
   } catch (error) {
     console.log(error.message);
     res.status(500).json({
-      msg: "Server Error!",
+      msg: 'Server Error!',
     });
   }
 };

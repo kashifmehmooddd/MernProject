@@ -145,7 +145,11 @@ const currentProfile = async (req, res) => {
 
     if (!profile) {
       return res.status(400).json({
-        msg: "There's no profile for this user!",
+        errors: [
+          {
+            msg: "There's no profile for this user!",
+          },
+        ],
       });
     }
 
@@ -190,7 +194,11 @@ const addExperience = async (req, res) => {
 
     if (!profile) {
       return res.status(400).json({
-        msg: "Your Profile doesn't exist!",
+        errors: [
+          {
+            msg: "Your Profile doesn't exist!",
+          },
+        ],
       });
     }
     profile.experience.unshift(experienceFields);
@@ -260,7 +268,11 @@ const addEducation = async (req, res) => {
 
     if (!profile) {
       return res.status(400).json({
-        msg: "Your Profile doesn't exist!",
+        errors: [
+          {
+            msg: "Your Profile doesn't exist!",
+          },
+        ],
       });
     }
     profile.education.unshift(educationFields);

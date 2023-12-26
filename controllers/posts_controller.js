@@ -18,12 +18,20 @@ const remove = async (req, res) => {
 
     if (!post)
       return res.status(400).json({
-        msg: 'Post not found!',
+        errors: [
+          {
+            msg: 'Post not found!',
+          },
+        ],
       });
 
     if (post.user != req.user)
       return res.status(400).json({
-        msg: 'You are not authorized to delete this post!',
+        errors: [
+          {
+            msg: 'You are not authorized to delete this post!',
+          },
+        ],
       });
 
     await Post.findByIdAndDelete(req.params.id);
@@ -86,7 +94,11 @@ const addComment = async (req, res) => {
 
     if (!post)
       return res.status(400).json({
-        msg: 'Post not found!',
+        errors: [
+          {
+            msg: 'Post not found!',
+          },
+        ],
       });
 
     post.comments.unshift(comment);
@@ -105,19 +117,31 @@ const removeComment = async (req, res) => {
 
     if (!post)
       return res.status(400).json({
-        msg: 'Post not found!',
+        errors: [
+          {
+            msg: 'Post not found!',
+          },
+        ],
       });
 
     const temp = post.comments.find((c) => c._id == req.params.comment_id);
 
     if (!temp)
       return res.status(400).json({
-        msg: 'Comment not found!',
+        errors: [
+          {
+            msg: 'Comment not found!',
+          },
+        ],
       });
 
     if (temp.user != req.user)
       res.status(400).json({
-        msg: 'You can only delete your comment!',
+        errors: [
+          {
+            msg: 'You can only delete your comment!',
+          },
+        ],
       });
 
     post.comments = post.comments.filter((c) => c._id != req.params.comment_id);
@@ -136,7 +160,11 @@ const addLike = async (req, res) => {
 
     if (!post)
       return res.status(400).json({
-        msg: 'Post not found!',
+        errors: [
+          {
+            msg: 'Post not found!',
+          },
+        ],
       });
 
     if (post.likes.some((l) => l.user == req.user))
@@ -172,7 +200,11 @@ const removeLike = async (req, res) => {
 
     if (!post)
       return res.status(400).json({
-        msg: 'Post not found!',
+        errors: [
+          {
+            msg: 'Post not found!',
+          },
+        ],
       });
 
     const temp = post.likes.find((l) => l.user == req.user);

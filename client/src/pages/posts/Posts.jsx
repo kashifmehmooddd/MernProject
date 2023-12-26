@@ -166,7 +166,7 @@ const Posts = ({
                     </div>
                     <div className='media-body'>{comment.text}</div>
                   </div>
-                  <hr />
+                  {index < post?.comments.length - 1 && <hr />}
                 </>
               ))}
             </div>

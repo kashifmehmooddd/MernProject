@@ -32,6 +32,6 @@ router.put(
 );
 router.delete('/:id/comment/:comment_id', auth, removeComment);
 router.put('/:id/like', auth, addLike);
-router.delete('/:id/like/:like_id', auth, removeLike);
+router.delete('/:id/like', auth, removeLike);
 
 module.exports = router;

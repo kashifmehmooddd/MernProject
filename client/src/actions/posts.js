@@ -6,6 +6,8 @@ import {
   CREATE_POST,
   ADD_COMMENT,
   REMOVE_COMMENT,
+  ADD_LIKE,
+  REMOVE_LIKE,
 } from './types';
 import store from '../store';
 import { setAlert } from './alert';
@@ -81,3 +83,37 @@ export const removeComment =
       store.dispatch(setAlert('Error!', 'danger'));
     }
   };
+
+export const like = (postId) => async (dispatch) => {
+  const response = await putApi({
+    endpoint: `posts/${postId}/like`,
+  });
+
+  if (response.status === 200) {
+    dispatch({
+      type: ADD_LIKE,
+      payload: response.data,
+    });
+    store.dispatch(setAlert('Liked this post', 'success'));
+  } else {
+    let errors = response.data.errors.map((hash) => hash.msg).join(', ');
+    store.dispatch(setAlert(errors, 'danger'));
+  }
+};
+
+export const unlike = (postId) => async (dispatch) => {
+  const response = await deleteApi({
+    endpoint: `posts/${postId}/like`,
+  });
+
+  if (response.status === 200) {
+    dispatch({
+      type: REMOVE_LIKE,
+      payload: response.data,
+    });
+    store.dispatch(setAlert('Unliked this post', 'success'));
+  } else {
+    let errors = response.data.errors.map((hash) => hash.msg).join(', ');
+    store.dispatch(setAlert(errors, 'danger'));
+  }
+};

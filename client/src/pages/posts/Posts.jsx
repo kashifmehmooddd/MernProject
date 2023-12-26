@@ -2,11 +2,28 @@ import React from 'react';
 import './post.css';
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { getPosts, createPost, addComment, removeComment } from '../../actions/posts';
+import {
+  getPosts,
+  createPost,
+  addComment,
+  removeComment,
+  like,
+  unlike
+} from '../../actions/posts';
 import { setAlert } from '../../actions/alert';
 import $ from 'jquery';
 
-const Posts = ({ posts, getPosts, user, profile, createPost, addComment, removeComment }) => {
+const Posts = ({
+  posts,
+  getPosts,
+  user,
+  profile,
+  createPost,
+  addComment,
+  removeComment,
+  like,
+  unlike
+}) => {
   const handleCreate = () => {
     $('.modal').addClass('d-block');
   };
@@ -114,6 +131,11 @@ const Posts = ({ posts, getPosts, user, profile, createPost, addComment, removeC
                 <div className='media-body my-3'>{post.text}</div>
               </div>
             </div>
+            <hr className='m-0s' />
+            <div class='mx-2'>
+              {post.likes.length} likes {post.comments.length} comments
+            </div>
+            <p></p>
             <div className='card-footer'>
               {post?.comments.map((comment, index) => (
                 <>
@@ -127,7 +149,19 @@ const Posts = ({ posts, getPosts, user, profile, createPost, addComment, removeC
                         />
 
                         <strong className='mx-2'>{comment.name}</strong>
-                        {(user && comment.user === user._id) && <button onClick={() => removeComment({ postId: post._id, commentId: comment._id })} className='float-end btn btn-danger'>delete</button>}
+                        {user && comment.user === user._id && (
+                          <button
+                            onClick={() =>
+                              removeComment({
+                                postId: post._id,
+                                commentId: comment._id,
+                              })
+                            }
+                            className='float-end btn btn-danger'
+                          >
+                            delete
+                          </button>
+                        )}
                       </div>
                     </div>
                     <div className='media-body'>{comment.text}</div>
@@ -136,18 +170,44 @@ const Posts = ({ posts, getPosts, user, profile, createPost, addComment, removeC
                 </>
               ))}
             </div>
-
-            <form onSubmit={(e) => handleComment(e, post._id)}>
-              <div className='d-flex comment'>
-                <input
-                  required
-                  className='form-control'
-                  id={post._id}
-                  placeholder='Add your comment...'
-                />{' '}
-                <button className='btn btn-dark mx-2'>Comment</button>
-              </div>
-            </form>
+            {profile && (
+              <>
+                {post.likes?.some((like) => like.user === user._id) ? (
+                  <>
+                    <button
+                      type='button'
+                      className='btn btn-dark m-2'
+                      onClick={() => unlike(post._id)}
+                    >
+                      Unlike
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      type='button'
+                      className='btn btn-dark m-2'
+                      onClick={() => like(post._id)}
+                    >
+                      Like
+                    </button>
+                  </>
+                )}
+                <form onSubmit={(e) => handleComment(e, post._id)}>
+                  <div className='d-flex comment'>
+                    <input
+                      required
+                      className='form-control'
+                      id={post._id}
+                      placeholder='Add your comment...'
+                    />{' '}
+                    <button type='submit' className='btn btn-dark mx-2'>
+                      Comment
+                    </button>
+                  </div>
+                </form>{' '}
+              </>
+            )}
           </div>
         ))}
       </div>
@@ -166,5 +226,7 @@ export default connect(mapStateToProps, {
   createPost,
   setAlert,
   addComment,
-  removeComment
+  removeComment,
+  like,
+  unlike
 })(Posts);

@@ -15,7 +15,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import ProfileSetup from "./pages/dashboard/ProfileSetup";
 import NewEducation from "./pages/dashboard/NewEducation";
 import NewExperience from "./pages/dashboard/NewExperience";
-import Posts from "./pages/posts/Post";
+import Posts from "./pages/posts/Posts";
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);

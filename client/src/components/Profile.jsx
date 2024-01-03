@@ -35,6 +35,9 @@ const Profile = ({ profile }) => {
         <div className='ms-5'>
           <button className='btn btn-large btn-dark'>Show profile</button>
         </div>
+        <div className='ms-5'>
+          <button className='btn btn-large btn-dark'>Follow</button>
+        </div>
       </div>
       <div className='profile skills'>
         <strong className='ms-5'>Skills: </strong>

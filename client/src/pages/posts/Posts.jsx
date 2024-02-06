@@ -33,6 +33,14 @@ const Posts = ({
     $('.modal').removeClass('d-block');
   };
 
+  const handleComment = (e, id) => {
+    e.preventDefault();
+    addComment({
+      text: e.target.querySelector('input.form-control').value,
+      id,
+    });
+  };
+
   const handleShare = (e) => {
     e.preventDefault();
     createPost({ text: $('#text').val() }).then((result) => {
@@ -110,7 +118,7 @@ const Posts = ({
       )}
       <div className='mt-5 posts'>
         {posts.map((post) => (
-          <Post post={post} />
+          <Post post={post} handleComment={handleComment} />
         ))}
       </div>
     </div>

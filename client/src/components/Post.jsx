@@ -7,14 +7,7 @@ import {
 } from "../actions/posts";
 import { connect } from "react-redux";
 
-const Post = ({ post, user, profile, like, unlike, removeComment }) => {
-  const handleComment = (e, id) => {
-    e.preventDefault();
-    addComment({
-      text: e.target.querySelector('input.form-control').value,
-      id,
-    });
-  };
+const Post = ({ post, user, profile, like, unlike, removeComment, handleComment }) => {
 
   return (
     <div className='card mb-4' key={post._id}>

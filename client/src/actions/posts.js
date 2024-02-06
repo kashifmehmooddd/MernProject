@@ -96,8 +96,7 @@ export const like = (postId) => async (dispatch) => {
     });
     store.dispatch(setAlert('Liked this post', 'success'));
   } else {
-    let errors = response.data.errors.map((hash) => hash.msg).join(', ');
-    store.dispatch(setAlert(errors, 'danger'));
+    store.dispatch(setAlert('request processing!', 'danger'));
   }
 };
 
@@ -113,7 +112,6 @@ export const unlike = (postId) => async (dispatch) => {
     });
     store.dispatch(setAlert('Unliked this post', 'success'));
   } else {
-    let errors = response.data.errors.map((hash) => hash.msg).join(', ');
-    store.dispatch(setAlert(errors, 'danger'));
+    store.dispatch(setAlert('request processing!', 'danger'));
   }
 };

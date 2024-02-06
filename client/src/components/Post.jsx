@@ -1,4 +1,20 @@
-const Post = ({ post, user, profile, like, unlike, handleComment, removeComment }) => {
+import Comment from "./Comment";
+import {
+  addComment,
+  removeComment,
+  like,
+  unlike
+} from "../actions/posts";
+import { connect } from "react-redux";
+
+const Post = ({ post, user, profile, like, unlike, removeComment }) => {
+  const handleComment = (e, id) => {
+    e.preventDefault();
+    addComment({
+      text: e.target.querySelector('input.form-control').value,
+      id,
+    });
+  };
 
   return (
     <div className='card mb-4' key={post._id}>
@@ -52,36 +68,7 @@ const Post = ({ post, user, profile, like, unlike, handleComment, removeComment 
       <p></p>
       <div className='card-footer'>
         {post?.comments.map((comment, index) => (
-          <>
-            <div className='media' key={index}>
-              <div className='d-flex align-items-center'>
-                <div className='w-100'>
-                  <img
-                    alt={comment.name}
-                    src={comment.avatar}
-                    className='mr-3 rounded-circle'
-                  />
-
-                  <strong className='mx-2'>{comment.name}</strong>
-                  {user && comment.user === user._id && (
-                    <button
-                      onClick={() =>
-                        removeComment({
-                          postId: post._id,
-                          commentId: comment._id,
-                        })
-                      }
-                      className='float-end btn btn-danger'
-                    >
-                      delete
-                    </button>
-                  )}
-                </div>
-              </div>
-              <div className='media-body'>{comment.text}</div>
-            </div>
-            {index < post?.comments.length - 1 && <hr />}
-          </>
+          <Comment comment={comment} index={index} removeComment={removeComment} post={post} user={user} />
         ))}
       </div>
       {profile && (
@@ -105,5 +92,15 @@ const Post = ({ post, user, profile, like, unlike, handleComment, removeComment 
   )
 }
 
-export default Post;
+const mapStateToProps = (state) => ({
+  profile: state.auth.profile,
+  user: state.auth.user,
+});
+
+export default connect(mapStateToProps, {
+  addComment,
+  removeComment,
+  like,
+  unlike
+})(Post);
 

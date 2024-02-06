@@ -8,7 +8,7 @@ import {
   addComment,
   removeComment,
   like,
-  unlike
+  unlike,
 } from '../../actions/posts';
 import { setAlert } from '../../actions/alert';
 import $ from 'jquery';
@@ -23,7 +23,7 @@ const Posts = ({
   addComment,
   removeComment,
   like,
-  unlike
+  unlike,
 }) => {
   const handleCreate = () => {
     $('.modal').addClass('d-block');
@@ -40,14 +40,6 @@ const Posts = ({
         $('#text').val('');
         $('.modal').removeClass('d-block');
       }
-    });
-  };
-
-  const handleComment = (e, id) => {
-    e.preventDefault();
-    addComment({
-      text: e.target.querySelector('input.form-control').value,
-      id,
     });
   };
 
@@ -118,7 +110,7 @@ const Posts = ({
       )}
       <div className='mt-5 posts'>
         {posts.map((post) => (
-          <Post post={post} user={user} profile={profile} like={unlike} handleComment={handleComment} removeComment={removeComment} />
+          <Post post={post} />
         ))}
       </div>
     </div>
@@ -138,5 +130,5 @@ export default connect(mapStateToProps, {
   addComment,
   removeComment,
   like,
-  unlike
+  unlike,
 })(Posts);

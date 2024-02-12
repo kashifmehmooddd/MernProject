@@ -1,8 +1,6 @@
 import { deleteApi, getApi, postApi, putApi } from '../components/api/API';
-import setAuthToken from '../utils/setAuthToken';
 import {
   SET_POSTS,
-  SET_PROFILES,
   CREATE_POST,
   ADD_COMMENT,
   REMOVE_COMMENT,
